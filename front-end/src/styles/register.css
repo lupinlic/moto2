@@ -1,0 +1,78 @@
+.register-container {
+    max-width: 400px;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.register-header h1 {
+    font-size: 24px;
+    color: #e51414;
+    font-weight: bold;
+}
+
+.btn-pink {
+    background-color: #e83e8c;
+    border: none;
+    color: white;
+    width: 100%;
+}
+
+.btn-pink:hover {
+    background-color: #d63384;
+}
+
+.btn-google {
+    background-color: #db4437;
+    color: white;
+    width: 100%;
+    border: none;
+}
+
+.btn-google:hover {
+    background-color: #c23321;
+}
+
+.btn-facebook {
+    background-color: #4267B2;
+    color: white;
+    width: 100%;
+    border: none;
+}
+
+.btn-facebook:hover {
+    background-color: #365899;
+}
+
+.form-control:focus {
+    border-color: #e83e8c;
+    box-shadow: none;
+}
+
+.social-register {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.divider {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.divider:before,
+.divider:after {
+    content: '';
+    display: inline-block;
+    width: 40%;
+    height: 1px;
+    background: #ddd;
+    vertical-align: middle;
+    margin: 0 10px;
+}

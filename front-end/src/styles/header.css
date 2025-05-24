@@ -1,0 +1,252 @@
+.header {
+    width: 100%;
+    height: 100px;
+}
+
+.header-topbar {
+    width: 100%;
+    height: 42px;
+    background-color: #D71920;
+    border-radius: 0 0 0 15px;
+    position: relative;
+    z-index: 1;
+
+}
+
+.header-topbar:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    right: auto;
+    width: 111.5%;
+    top: 0;
+    bottom: 0;
+    background: #d71920;
+    z-index: -1;
+    border-radius: 0 0 0 15px;
+}
+
+.header-menu {
+    width: 100%;
+    height: 58px;
+}
+
+.header-topbar-list a {
+    color: #fff;
+}
+
+.header-topbar-list a:hover {
+    color: #ffb42e;
+}
+
+.header-topbar-list li {
+    border-right: 1px solid #fff;
+    padding: 0 8px;
+    font-size: 14px;
+}
+
+.header-topbar-list li i {
+    margin: 0 4px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: white;
+    text-decoration: none;
+    font-size: 20px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Hiệu ứng viền phát sáng */
+.social-icons a::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border: 3px solid transparent;
+    transition: 0.3s ease-in-out;
+}
+
+/* Màu sắc khi hover */
+.social-icons a:hover::before {
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 15px white;
+}
+
+.social-icons a:hover {
+    transform: scale(1.1);
+}
+
+/* Màu sắc cho từng icon */
+.facebook {
+    color: #1877f2;
+}
+
+.youtube {
+    color: #ff0000;
+}
+
+.twitter {
+    color: #1da1f2;
+}
+
+.pinterest {
+    color: #e60023;
+}
+
+.instagram {
+    color: #c32aa3;
+}
+
+.header-menu ul a {
+    font-size: 18px;
+    color: #000;
+    font-weight: 600;
+}
+
+.header-menu ul a:hover {
+    color: #ffb42e;
+}
+
+.dropdown-cate-item {
+    width: 800px;
+    height: 200px;
+    background-color: #fff;
+    left: -300px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease-in-out;
+    visibility: hidden;
+    z-index: 1000;
+}
+
+.header-menu-parent:hover .dropdown-cate-item {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+.header-menu-child ul {
+    color: rgb(249, 36, 36);
+}
+
+.header-menu-child li {
+    margin-left: 16px;
+    margin-top: 8px;
+    font-weight: 400;
+}
+
+.icon {
+    position: relative;
+    font-size: 24px;
+    cursor: pointer;
+    color: black;
+}
+
+.icon:hover {
+    color: #ffb42e;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: #ef4848;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50% !important;
+}
+
+/* menu */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    z-index: 1000;
+    /* Ẩn menu ban đầu */
+    width: 300px;
+    height: 100%;
+    background: #d71920;
+    color: #fff;
+    transition: left 0.8s ease-in-out;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    right: 0;
+}
+
+.overlaymenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Màu đen mờ */
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out;
+}
+
+.overlaymenu.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidebar p {
+    color: #fff;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.sidebar button {
+    background-color: #877c76;
+    border: none;
+    color: #fff;
+    height: 36px;
+    font-size: 12px;
+    width: 70px;
+}
+
+.sidebar input {
+    outline: none;
+    border: none;
+    font-size: 14px;
+    width: 200px;
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px 8px;
+}
+
+.sidebar a:hover {
+    background: #cc1818;
+}

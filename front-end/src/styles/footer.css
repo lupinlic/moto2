@@ -1,0 +1,46 @@
+.footer {
+
+    height: auto;
+}
+
+.wave-container {
+    position: relative;
+    width: 100%;
+    min-height: 250px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.wave {
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: auto;
+    animation: waveMove 8s linear infinite;
+}
+
+.wave2 {
+    opacity: 0.6;
+    animation-duration: 10s;
+    animation-delay: -4s;
+}
+
+@keyframes waveMove {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+
+.mid-footer {
+    background-color: #d71920;
+    height: auto;
+    padding-bottom: 20px;
+    background-image: url('https://bizweb.dktcdn.net/100/519/812/themes/954445/assets/bg-home.png?1741709392044');
+}

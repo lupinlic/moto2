@@ -1,0 +1,102 @@
+.content-menu {
+
+    border: 1px solid #d71920;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.content-menu a {
+    color: #000;
+}
+
+.content-menu a:hover {
+    color: #FFB42E;
+}
+
+.form-check-label {
+    font-size: 14px !important;
+}
+
+.chose-price:hover label {
+    color: #FFB42E;
+    cursor: pointer;
+}
+
+.arrange {
+    color: #d71920;
+    display: block;
+    padding: 5px 10px;
+    border: 1px solid #ffb42e;
+    border-radius: 5px;
+    margin-left: 12px;
+}
+
+.arrange:hover {
+    background-color: #ffb42e;
+    color: #fff;
+    cursor: pointer;
+}
+
+.pagination a {
+    color: #000;
+    border: 1px solid red;
+    border-radius: 5px;
+    margin-right: 12px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination a:hover {
+    color: #fff;
+    background-color: #d71920;
+    border: none;
+
+}
+
+.half-circle div {
+    display: inline-block;
+    position: absolute;
+    right: 27%;
+    top: -15%;
+}
+
+.half-circle button {
+    border-radius: 20px;
+    padding: 8px;
+    background-color: #D71920;
+    color: #fff;
+    border: none;
+}
+
+.likeproduct {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 20px;
+}
+
+@media (max-width: 480px) {
+    .likeproduct {
+        flex-wrap: nowrap;
+        width: 100%;
+        overflow-x: auto;
+        padding: 8px 0px;
+    }
+
+    .half-circle div {
+        display: inline-block;
+        position: absolute;
+        right: 17%;
+        top: -10%;
+    }
+
+    .half-circle button {
+        border-radius: 20px;
+        padding: 8px;
+        background-color: #D71920;
+        color: #fff;
+        border: none;
+    }
+}
