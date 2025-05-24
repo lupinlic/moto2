@@ -24,8 +24,9 @@ function Order() {
         fetchOrder();
     }, []);
 
-    const openForm = (id = null) => {
+    const openForm = (id = null, item) => {
         setSelectedOrderId(id);
+        setSelectedOrder(item);
         setIsFormVisible(true);
     };
 
@@ -58,6 +59,14 @@ function Order() {
             status: newStatus,
         }));
     };
+    const cancelOrder = async (id) => {
+        try {
+            await orderApi.cancelOrder(id);
+            fetchOrder(); // Cập nhật danh sách đơn hàng sau khi hủy
+        } catch (error) {
+            console.error('Có lỗi khi hủy đơn hàng:', error);
+        }
+    };
     console.log(selectedOrder)
     return (
         <div style={{ backgroundColor: '#fff', minHeight: '100vh', paddingLeft: '4px' }}>
@@ -67,38 +76,63 @@ function Order() {
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Name</th>
-                            <th>PhoneNumber</th>
-                            <th>Email</th>
-                            <th>OrderDate</th>
-                            <th>TotalPrice</th>
-                            <th>Status</th>
-                            <th>Address</th>
-                            <th>PTTT</th>
-                            <th>TTTT</th>
-                            <th></th>
+                            <th>Ngày đặt</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Cập nhật</th>
+                            <th>Phương thức TT</th>
+                            <th>Trạng thái TT</th>
+                            <th>Chi tiết</th>
+                            <th>Hóa đơn</th>
                         </tr>
                     </thead>
                     <tbody>
                         {order?.map((item, index) => (
                             <tr key={index}>
                                 <td>{index + 1}</td>
-                                <td>{item.customer.FullName}</td>
-                                <td>{item.customer.PhoneNumber}</td>
-                                <td>{item.customer.Email}</td>
                                 <td>{item.OrderDate}</td>
                                 <td>{item.TotalPrice}</td>
-                                <td className=''>{item.status}<tr />
-                                    {item.status === 'completed' ? <span className='text-success'>Hoàn thành</span> : <button style={{ width: '100px' }} onClick={() => openForm1(item.OrderID)} className='btn btn-warning btn-sm mr-2'>Cập nhật</button>}
-
-                                </td>
-                                <td>{item.address.SpecificAddress},{item.address.Wards},{item.address.Districts},{item.address.Provinces}</td>
-                                <th>PTTT</th>
-                                <td>Chưa TT</td>
                                 <td className=''>
-                                    <i title='Chi tiết' onClick={() => openForm(item.OrderID)} class="fa-solid fa-eye eye"></i>
-                                    <i onClick={() => openForm2(item)} title='In hóa đơn' class="fa-solid fa-print eye"></i>
+                                    {item.status === 'pending'
+                                        ? 'Chờ xác nhận'
+                                        : item.status === 'processing'
+                                            ? 'Đang giao hàng'
+                                            : item.status === 'completed'
+                                                ? 'Đã giao hàng'
+                                                : item.status === 'canceled'
+                                                    ? 'Đã hủy'
+                                                    : 'Chưa xác định'}
                                 </td>
+                                <td className='d-flex flex-column ' style={{ minHeight: '60.7px' }}>
+                                    {item.status === 'completed' ? (
+                                        <span className='text-success'>Hoàn thành</span>
+                                    ) : item.status === 'canceled' ? (
+                                        <span className='text-danger'>Đã hủy</span>
+                                    ) : (
+                                        <button
+                                            style={{ width: '100px' }}
+                                            onClick={() => openForm1(item.OrderID)}
+                                            className='btn btn-warning btn-sm mr-2'
+                                        >
+                                            Cập nhật
+                                        </button>
+                                    )}
+                                    {item.status === 'pending' && (
+                                        <button
+                                            style={{ width: '100px' }}
+                                            className='btn btn-danger btn-sm'
+                                            onClick={() => cancelOrder(item.OrderID)}
+                                        >
+                                            Hủy đơn
+                                        </button>
+                                    )}
+                                </td>
+                                <td>{item.payment.Method === 'cod' ? <span>Thanh toán khi nhận hàng</span> : <span>Online</span>}</td>
+                                <td>{item.payment.Status === 'pending' ? <span>Chưa thanh toán</span> : <span>Đã thanh toán</span>}</td>
+                                <td className=''>
+                                    <button title='Chi tiết' onClick={() => openForm(item.OrderID, item)} class="btn btn-warning btn-sm mr-2">Xem</button>
+                                </td>
+                                <td><button onClick={() => openForm2(item)} title='In hóa đơn' class="btn btn-warning btn-sm mr-2">In</button></td>
                             </tr>
                         ))}
 
@@ -110,6 +144,15 @@ function Order() {
                     <div className="overLay"></div> {/* Lớp overlay */}
                     <OrderDetails
                         id={selectedOrderId}
+                        data={{
+                            customerName: selectedOrder.customer.FullName,
+                            customerAddress: `${selectedOrder.address.SpecificAddress}, ${selectedOrder.address.Wards}, ${selectedOrder.address.Districts}, ${selectedOrder.address.Provinces}`,
+                            total: selectedOrder.TotalPrice,
+                            orderid: selectedOrder.OrderID,
+                            date: selectedOrder.OrderDate,
+                            customerPhone: selectedOrder.customer.PhoneNumber,
+
+                        }}
                         onClose={closeForm}
                     // Truyền hàm fetchOrder vào props
                     />

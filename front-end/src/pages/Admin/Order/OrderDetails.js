@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import orderApi from '../../../api/orderApi';
 
-const OrderDetails = ({ id, onClose }) => {
+const OrderDetails = ({ id, onClose, data }) => {
     const [order, setOrder] = useState([]);
     const fetchOrder = async () => {
         try {
@@ -19,6 +19,11 @@ const OrderDetails = ({ id, onClose }) => {
         <div className="form-popup111" style={{ width: '650px' }}>
             <form className="form-container">
                 <h4 className='mt-3'>Thông tin đơn hàng</h4>
+
+                <p>Tên khách hàng: {data.customerName}</p>
+                <p>Số điện thoại: {data.customerPhone}</p>
+                <p>Địa chỉ nhận hàng: {data.customerAddress}</p>
+                <p>Ngày đặt: {data.date}</p>
                 <table className="table table-striped">
                     <thead>
                         <tr>

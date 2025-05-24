@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import orderApi from '../api/orderApi';
-
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 
 function NewOrder() {
     const [orders, setOrders] = useState([]);
+    const navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
     const bellRef = useRef();
 
@@ -25,18 +26,11 @@ function NewOrder() {
         }
     };
 
-    const handleSingleMarkAsRead = async (orderId) => {
+    const handleSingleMarkAsRead = async (id) => {
+        console.log('Đánh dấu đơn hàng đã đọc:', id);
         try {
-            await orderApi.markAsRead([orderId]);
+            await orderApi.markAsRead(id);
             // Tạo hiệu ứng mờ dần trước khi xoá khỏi danh sách
-            const el = document.getElementById(`order-item-${orderId}`);
-            if (el) {
-                el.style.transition = 'opacity 0.5s ease';
-                el.style.opacity = 0;
-                setTimeout(() => {
-                    setOrders(prev => prev.filter(order => order.OrderID !== orderId));
-                }, 500); // chờ hiệu ứng xong mới xóa
-            }
         } catch (err) {
             console.error('Lỗi khi đánh dấu đơn hàng:', err);
         }
@@ -77,7 +71,7 @@ function NewOrder() {
                                             handleSingleMarkAsRead(order.OrderID);
                                             // sau khi hiệu ứng xong, bạn có thể chuyển trang nếu muốn
                                             setTimeout(() => {
-                                                window.location.href = '/Admin/Order'; // hoặc dùng navigate()
+                                                navigate('/Admin/Order')
                                             }, 500);
                                         }}>
                                             Đơn #{order.OrderID} - {new Date(order.OrderDate).toLocaleString()}

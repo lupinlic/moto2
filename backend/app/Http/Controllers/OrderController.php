@@ -22,7 +22,9 @@ class OrderController extends Controller
     public function index()
     {
         //
-        $orders = Order::with('customer','address')->get();
+        $orders = Order::with('customer', 'address','payment')
+        ->orderBy('OrderDate', 'desc')
+        ->get();
         
         return response()->json([
             "message" => "đã hiển thị đơn hàng thành công",
@@ -172,22 +174,26 @@ class OrderController extends Controller
         ]);
     }
 // mail
-    public function sendEmail(Request $request)
-    {
-        $paymentMethod = $request->paymentMethod;
-        $emailContent = $request->emailContent;
-        $userEmail = $request->userEmail; 
+public function sendEmail(Request $request)
+{
+    try {
+        Mail::to($request->customerEmail)->send(new PaymentConfirmation(
+            $request->emailContent,
+            $request->orderId,
+            $request->customerName,
+            $request->customerEmail,
+            $request->customerPhone,
+            $request->shippingAddress,
+            $request->paymentMethod,
+            $request->orderDetails,
+            $request->totalPrice
+        ));
 
-        // Gửi email
-        try {
-            Mail::to($userEmail) // Địa chỉ email người nhận
-                ->send(new PaymentConfirmation($paymentMethod, $emailContent));
-
-            return response()->json(['message' => 'Email sent successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to send email'], 500);
-        }
+        return response()->json(['message' => 'Email đã được gửi thành công'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Gửi email thất bại', 'details' => $e->getMessage()], 500);
     }
+}
 
 
 // thống kê
@@ -290,10 +296,26 @@ public function updateStatus(Request $request, $id)
 
     return response()->json(['message' => 'Đã cập nhật trạng thái thành công', 'order' => $order]);
 }
+// hủy đơn
+public function cancel($id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json(['message' => 'Không tìm thấy đơn hàng'], 404);
+    }
+    $order->status = 'canceled';
+    $order->save();
+
+    return response()->json([
+        'message' => 'Hủy đơn hàng thành công',
+        'data' => $order
+    ]);
+}
 // đơn hàng mới
 public function getNewOrders()
 {
-    $orders = Order::where('is_notified', false)
+    $orders = Order::where('is_notified', '0')
                     ->orderBy('OrderDate', 'desc')
                     ->take(10)
                     ->get();
@@ -303,11 +325,28 @@ public function getNewOrders()
 // thong báo đơn hàng mới
 public function markOrdersAsNotified(Request $request)
 {
-    $ids = $request->input('OrderID', []);
-    if (!empty($ids)) {
-        Order::whereIn('OrderID', $ids)->update(['is_notified' => true]);
+    $id = $request->input('id');
+
+    if (empty($id)) {
+        return response()->json([
+            'message' => 'Không có ID đơn hàng được cung cấp.',
+        ], 400);
     }
 
-    return response()->json(['message' => 'Đã cập nhật trạng thái thông báo']);
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'message' => 'Đơn hàng không tồn tại.',
+        ], 404);
+    }
+
+    $order->is_notified = 1;
+    $order->save();
+
+    return response()->json([
+        'message' => 'Đã cập nhật trạng thái thông báo cho đơn hàng.',
+        'order_id' => $id
+    ]);
 }
 }

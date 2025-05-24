@@ -10,6 +10,10 @@ function Cart() {
     const navigate = useNavigate();
     const { fetchCartCount } = useContext(CartContext);
     const handletocheckout = () => {
+        if (selectedItems.length === 0) {
+            alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+            return;
+        }
         const selectedProducts = cart.filter(item => selectedItems.includes(item.CartID));
         navigate('/Checkout', { state: { selectedProducts } }); // Chuyển sang trang success khi đặt hàng thành công
     };

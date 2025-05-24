@@ -31,6 +31,11 @@ function ProductDetails() {
     const [quantity, setQuantity] = useState(1);
     const { fetchCartCount } = useContext(CartContext);
     const handleBuyNow = (product) => {
+        if (!userId) {
+            alert("Bạn cần đăng nhập để mua hàng.");
+            window.location.href = "Login"; // hoặc dùng navigate nếu dùng react-router
+            return;
+        }
         if (!selectedColor || !selectedVersion) {
             alert("Vui lòng chọn màu sắc và phiên bản!");
             return;
@@ -128,6 +133,11 @@ function ProductDetails() {
         Quantity: quantity,
     }
     const handleAddToCart = async () => {
+        if (!userId) {
+            alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.");
+            window.location.href = "Login"; // hoặc dùng navigate nếu dùng react-router
+            return;
+        }
         if (!selectedColor || !selectedVersion) {
             alert("Vui lòng chọn màu sắc và phiên bản!");
             return;

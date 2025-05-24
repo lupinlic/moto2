@@ -33,7 +33,7 @@ Route::get('auth/google/callback', [SocialAuthController::class, 'handleGoogleCa
 
 Route::get('auth/facebook', [SocialAuthController::class, 'redirectToFacebook']);
 Route::get('auth/facebook/callback', [SocialAuthController::class, 'handleFacebookCallback']);
-Route::post('/send-email', [OrderController::class, 'sendEmail']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/getuserID', [AuthController::class, 'userID']);
@@ -95,11 +95,14 @@ Route::middleware('auth:sanctum')->group(function () {
         // đơn hnagf
         Route::get('order', [OrderController::class, 'index']);
         Route::get('order/{id}', [OrderController::class, 'show']);
+       
      
         // thống kê
         Route::get('/statistics', [OrderController::class, 'getAdvancedStatistics']);
         // trạng thái đơn hàng
         Route::put('/orders/{id}/update-status', [OrderController::class, 'updateStatus']);
+        // hủy đơn
+        Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
         // đơn hàng mới
         Route::get('/admin/orders/new', [OrderController::class, 'getNewOrders']);
         Route::post('/admin/orders/mark-notified', [OrderController::class, 'markOrdersAsNotified']);
@@ -118,7 +121,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('productcolor/byproduct/{id}', [ProductColorController::class, 'getByProduct']); 
     Route::get('productversion', [ProductVersionController::class, 'index']); 
     Route::get('productcolor', [ProductColorController::class, 'index']); 
- 
+    Route::post('/send-email', [OrderController::class, 'sendEmail']);
 
    
     

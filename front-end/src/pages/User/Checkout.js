@@ -200,7 +200,7 @@ function Checkout() {
             setTransactionHash(tx.hash);
 
             // Gửi email thông báo thanh toán thành công
-            sendEmailNotification();
+
         } catch (error) {
             console.error("Payment failed", error);
         }
@@ -208,8 +208,8 @@ function Checkout() {
     const sendEmailNotification = async () => {
         const paymentMethod = selectedPayment; // Đảm bảo đây là phương thức thanh toán đã chọn (COD hoặc Metamask)
         const emailContent = paymentMethod === 'Metamask'
-            ? 'Nội dung email cho thanh toán qua Metamask'
-            : 'Nội dung email cho thanh toán khi nhận hàng';
+            ? 'Thanh toán qua Metamask'
+            : 'Thanh toán khi nhận hàng';
 
         try {
             const response = await fetch('http://127.0.0.1:8000/api/send-email', {
@@ -220,8 +220,18 @@ function Checkout() {
                 body: JSON.stringify({
                     paymentMethod: paymentMethod, // Gửi phương thức thanh toán
                     emailContent: emailContent,
-                    userEmail: 'lamlemlol@gmail.com',   // Nội dung email tùy theo phương thức thanh toán
-                    // Các thông tin khác nếu cần thiết
+                    customerEmail: addresses.Email, // Email của khách hàng
+                    orderDetails: selectedProducts.map(item => ({
+                        ProductName: item.product.ProductName,
+                        Quantity: item.Quantity,
+                        Price: item.product.ProductPrice,
+                    })),
+                    orderId: Math.floor(Math.random() * 1000), // Giả định ID đơn hàng
+                    totalPrice: total, // Tổng số tiền
+                    shippingAddress: `${addresses.SpecificAddress}, ${addresses.Wards}, ${addresses.Districts}, ${addresses.Provinces}`, // Địa chỉ nhận hàng
+                    customerName: addresses.FullName, // Tên người nhận
+                    customerPhone: addresses.PhoneNumber, // Số điện thoại người nhận
+
                 }),
             });
 

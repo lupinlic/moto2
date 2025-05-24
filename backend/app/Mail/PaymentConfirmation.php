@@ -17,22 +17,31 @@ class PaymentConfirmation extends Mailable
      * Create a new message instance.
      */
 
-     public $paymentMethod;
      public $emailContent;
- 
-     public function __construct($paymentMethod, $emailContent)
-     {
-         $this->paymentMethod = $paymentMethod;
-         $this->emailContent = $emailContent;
-     }
- 
+    public $orderId;
+    public $customerName;
+    public $customerEmail;
+    public $customerPhone;
+    public $shippingAddress;
+    public $paymentMethod;
+    public $orderDetails;
+    public $totalPrice;
+
+    public function __construct($emailContent, $orderId, $customerName, $customerEmail, $customerPhone, $shippingAddress, $paymentMethod, $orderDetails, $totalPrice)
+    {
+        $this->emailContent = $emailContent;
+        $this->orderId = $orderId;
+        $this->customerName = $customerName;
+        $this->customerEmail = $customerEmail;
+        $this->customerPhone = $customerPhone;
+        $this->shippingAddress = $shippingAddress;
+        $this->paymentMethod = $paymentMethod;
+        $this->orderDetails = $orderDetails;
+        $this->totalPrice = $totalPrice;
+    }
      public function build()
-     {
-         $subject = $this->paymentMethod === 'bank'
-             ? 'Thông tin thanh toán qua Metamask'
-             : 'Thông tin thanh toán khi nhận hàng';
- 
-         return $this->subject($subject)
-                     ->view('emails.payment_confirmation'); // Sử dụng view để render email
-     }
+    {
+        return $this->subject('Xác nhận thanh toán')
+                    ->view('emails.payment_confirmation'); // Tên file blade
+    }
 }

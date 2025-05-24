@@ -25,8 +25,11 @@ const orderApi = {
     getNewOrders() {
         return axiosClient.get('/admin/orders/new');
     },
-    markAsRead(ids) {
-        return axiosClient.post('/admin/orders/mark-notified', { ids });
+    markAsRead(id) {
+        return axiosClient.post('/admin/orders/mark-notified', { id });
+    },
+    cancelOrder(id) {
+        return axiosClient.post(`/orders/${id}/cancel`);
     },
 
 
