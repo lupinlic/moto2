@@ -31,6 +31,9 @@ const orderApi = {
     cancelOrder(id) {
         return axiosClient.post(`/orders/${id}/cancel`);
     },
+    getpayUrl(Total, cartid, payload) {
+        return axiosClient.post('momo-payment', { Total: Total, cartid: cartid, payload: payload });
+    }
 
 
 

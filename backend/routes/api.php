@@ -122,6 +122,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('productversion', [ProductVersionController::class, 'index']); 
     Route::get('productcolor', [ProductColorController::class, 'index']); 
     Route::post('/send-email', [OrderController::class, 'sendEmail']);
-
+    Route::post('/momo-payment', [OrderController::class, 'momo_payment']);
+    Route::post('/momo-ipn', [OrderController::class, 'momoIpn']);
    
     
