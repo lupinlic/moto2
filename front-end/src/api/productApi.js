@@ -15,10 +15,10 @@ const productApi = {
         return axiosClient.get('/products');
     },
     getProductVersionByID(ProductID) {
-        return axiosClient.get(`productversion/byproduct/${ProductID}`);
+        return axiosClient.get(`productversion/${ProductID}`);
     },
     getProductColorByID(ProductID) {
-        return axiosClient.get(`productcolor/byproduct/${ProductID}`);
+        return axiosClient.get(`productcolor/${ProductID}`);
     },
     addProduct(data) {
         return axiosClient.post('/products', data);

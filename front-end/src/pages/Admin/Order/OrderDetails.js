@@ -20,10 +20,14 @@ const OrderDetails = ({ id, onClose, data }) => {
             <form className="form-container">
                 <h4 className='mt-3'>Thông tin đơn hàng</h4>
 
-                <p>Tên khách hàng: {data.customerName}</p>
-                <p>Số điện thoại: {data.customerPhone}</p>
-                <p>Địa chỉ nhận hàng: {data.customerAddress}</p>
-                <p>Ngày đặt: {data.date}</p>
+                {
+                    data ? (<div>
+                        <p>Tên khách hàng: {data.customerName}</p>
+                        <p>Số điện thoại: {data.customerPhone}</p>
+                        <p>Địa chỉ nhận hàng: {data.customerAddress}</p>
+                        <p>Ngày đặt: {data.date}</p>
+                    </div>) : (<p></p>)
+                }
                 <table className="table table-striped">
                     <thead>
                         <tr>

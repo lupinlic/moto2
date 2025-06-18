@@ -3,6 +3,8 @@ import VehicleTypeForm from './VehicleTypeForm';
 import categoryApi from '../../../api/categoryApi';
 
 function VehicleType() {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filtered, setFiltered] = useState([]);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [category, setCategory] = useState(null);
     const [selectedId, setSelectedId] = useState(null);
@@ -20,6 +22,9 @@ function VehicleType() {
             const response = await categoryApi.getCategory();
             setCategory(response.data);
             console.log(response.data);
+            if (!searchTerm.trim()) {
+                setFiltered(response.data);
+            }
         } catch (error) {
             console.error('Có lỗi khi lấy danh sách :', error);
         }
@@ -32,12 +37,24 @@ function VehicleType() {
             console.error('Có lỗi khi xóa hãng xe:', error);
         }
     }
+    const handleSearch = () => {
+        const lowerSearch = searchTerm.toLowerCase();
+        const result = category.filter(u =>
+            u.CategoryName.toLowerCase().includes(lowerSearch)
+        );
+        setFiltered(result);
+    };
+
+    const handleShowAll = () => {
+        setSearchTerm('');
+        setFiltered(category);
+    };
     useEffect(() => {
         get_all();
     }, []);
     return (
         <div style={{ backgroundColor: '#fff', minHeight: '100vh', paddingLeft: '4px' }}>
-            <div className="container supplier pt-3">
+            <div className="container supplier pt-3 d-flex justify-content-between align-items-center mb-3">
                 <button type="button" class="btn btn-success " onClick={() => openForm()}>Thêm</button>
                 {isFormVisible && (
                     <>
@@ -48,6 +65,17 @@ function VehicleType() {
                             onClose={closeForm} /> {/* Form */}
                     </>
                 )}
+                <div className="d-flex align-items-center justify-content-between" style={{ height: '50px' }}>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Nhập từ khóa tìm kiếm"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <button className="btn btn-primary" onClick={handleSearch}>Tìm</button>
+                    <button className="btn btn-secondary" onClick={handleShowAll} style={{ width: '100px' }}>Tất cả</button>
+                </div>
             </div>
 
             <div className='container pt-4'>
@@ -60,7 +88,7 @@ function VehicleType() {
                         </tr>
                     </thead>
                     <tbody>
-                        {category?.map((item, index) => (
+                        {filtered?.map((item, index) => (
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.parent.CategoryParentName}</td>

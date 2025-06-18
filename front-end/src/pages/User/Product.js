@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet-async";
 import ProductFrame from "../../components/ProductFrame";
 import { useSearchParams } from 'react-router-dom';
 import productApi from '../../api/productApi';
-
+import { useLocation } from 'react-router-dom';
 function Product() {
     const [searchParams] = useSearchParams();
     const parentId = searchParams.get("parent");
@@ -14,6 +14,9 @@ function Product() {
     const [products, setProducts] = useState([]);
     const [selectedPrices, setSelectedPrices] = useState([]);
     const [sortOption, setSortOption] = useState("");
+    const useQuery = () => new URLSearchParams(useLocation().search);
+    const query = useQuery();
+    const searchTerm = query.get("search") || "";
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -33,6 +36,12 @@ function Product() {
                 }
 
                 let filtered = res.data || res;
+                if (searchTerm && searchTerm.trim() !== '') {
+                    const lowerSearch = searchTerm.toLowerCase();
+                    filtered = filtered.filter(product =>
+                        product.ProductName.toLowerCase().includes(lowerSearch)
+                    );
+                }
                 // Lọc theo mức giá
                 if (selectedPrices.length > 0 && !selectedPrices.includes("all")) {
                     filtered = filtered.filter(product => {
@@ -71,7 +80,7 @@ function Product() {
         };
 
         fetchProducts();
-    }, [parentId, categoryId, selectedPrices, sortOption]);
+    }, [parentId, categoryId, selectedPrices, sortOption, searchTerm]);
     const handlePriceChange = (e) => {
         const value = e.target.value;
         if (e.target.checked) {

@@ -58,9 +58,8 @@ const ProductForm = ({ id, onUpdate, onClose }) => {
         formData.append('CategoryID', categoryId);
         formData.append('ProductPrice', productPrice);
         if (imageFile) {
-            formData.append('thumbnail', imageFile); // key phải là 'thumbnail'
+            formData.append('thumbnail', imageFile.name); // key phải là 'thumbnail'
         }
-        console.log(formData);
         try {
             if (id) {
                 await productApi.updateProduct(id, formData); // PUT hoặc POST tùy API

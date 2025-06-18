@@ -5,6 +5,8 @@ import ComfirmOrder from './ComfirmOrder';
 import Bill from './Bill';
 
 function Order() {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filtered, setFiltered] = useState([]);
     const [order, setOrder] = useState([]);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [isFormVisible1, setIsFormVisible1] = useState(false);
@@ -16,9 +18,41 @@ function Order() {
             const response = await orderApi.getAll();
             setOrder(response.data);
             console.log(response.data);
+            if (!searchTerm.trim()) {
+                setFiltered(response.data);
+            }
         } catch (error) {
             console.error('Có lỗi khi lấy danh sách tài khoản:', error);
         }
+    };
+    const handleSearch = () => {
+        const trimmed = searchTerm.trim();
+
+
+        if (!trimmed) {
+            setFiltered(order);
+            return;
+        }
+
+        const searchNumber = Number(trimmed);
+
+
+        if (isNaN(searchNumber)) {
+            alert("Vui lòng nhập mã đơn hàng hợp lệ (chỉ số).");
+            return;
+        }
+
+        const result = order.filter(u => u.OrderID === searchNumber);
+        if (result.length === 0) {
+            alert("Không tìm thấy đơn hàng có mã: " + searchNumber);
+        }
+
+        setFiltered(result);
+    };
+
+    const handleShowAll = () => {
+        setSearchTerm('');
+        setFiltered(order);
     };
     useEffect(() => {
         fetchOrder();
@@ -71,7 +105,20 @@ function Order() {
     return (
         <div style={{ backgroundColor: '#fff', minHeight: '100vh', paddingLeft: '4px' }}>
             <div className='container pt-4'>
-                <h5>Đơn hàng</h5>
+                <div className="container supplier pt-3 d-flex justify-content-between align-items-center mb-3">
+                    <h5>Đơn hàng</h5>
+                    <div className="d-flex align-items-center justify-content-between" style={{ height: '50px' }}>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Nhập từ khóa tìm kiếm"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button className="btn btn-primary" onClick={handleSearch}>Tìm</button>
+                        <button className="btn btn-secondary" onClick={handleShowAll} style={{ width: '100px' }}>Tất cả</button>
+                    </div>
+                </div>
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -87,7 +134,7 @@ function Order() {
                         </tr>
                     </thead>
                     <tbody>
-                        {order?.map((item, index) => (
+                        {filtered?.map((item, index) => (
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.OrderDate}</td>

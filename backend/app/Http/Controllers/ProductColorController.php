@@ -67,9 +67,15 @@ class ProductColorController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
+    
+        {
+            //
+            $products = ProductColor::with(['product.category.parent'])->findOrFail($id); // Eager loading
+    
+            // $products->thumbnail = url('image/' . $products->thumbnail);
+            return response()->json($products);
+        }
+    
 
     /**
      * Show the form for editing the specified resource.

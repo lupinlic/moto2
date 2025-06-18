@@ -2,24 +2,54 @@ import React, { useState, useEffect } from 'react';
 import newApi from '../../../api/newApi'
 
 function News() {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filtered, setFiltered] = useState([]);
     const [news, setNews] = useState([]);
     const fetchNews = async () => {
         try {
             const response = await newApi.getNews();
             setNews(response.data);
             console.log(response.data);
+            if (!searchTerm.trim()) {
+                setFiltered(response.data);
+            }
         } catch (error) {
             console.error('Có lỗi khi lấy danh sách tài khoản:', error);
         }
+    };
+    const handleSearch = () => {
+        const lowerSearch = searchTerm.toLowerCase();
+        const result = news.filter(u =>
+            u.Title.toLowerCase().includes(lowerSearch)
+        );
+        setFiltered(result);
+    };
+
+    const handleShowAll = () => {
+        setSearchTerm('');
+        setFiltered(news);
     };
     useEffect(() => {
         fetchNews();
     }, []);
     return (
         <div style={{ backgroundColor: '#fff', minHeight: '100vh', paddingLeft: '4px' }}>
-            <div className='container pt-4'>
-                <button type="button" class="btn btn-success ">Thêm</button>
-                <h5>Danh sách tin tức</h5>
+            <div className=''>
+                <div className="container supplier pt-3 d-flex justify-content-between align-items-center mb-3">
+                    <button type="button" class="btn btn-success " >Thêm</button>
+
+                    <div className="d-flex align-items-center justify-content-between" style={{ height: '50px' }}>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Nhập từ khóa tìm kiếm"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <button className="btn btn-primary" onClick={handleSearch}>Tìm</button>
+                        <button className="btn btn-secondary" onClick={handleShowAll} style={{ width: '100px' }}>Tất cả</button>
+                    </div>
+                </div>
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -31,7 +61,7 @@ function News() {
                         </tr>
                     </thead>
                     <tbody>
-                        {news?.map((item, index) => (
+                        {filtered?.map((item, index) => (
                             <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td>{item.Title}</td>

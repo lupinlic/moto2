@@ -65,7 +65,7 @@ class ProductVersionController extends Controller
     public function show($versionid)
     {
         //
-        $version = ProductVersion::find($versionid); // Tìm theo CustomerID
+        $version = ProductVersion::with(['product.category.parent'])->findOrFail($versionid); // Tìm theo CustomerID
 
         if (!$version) {
             return response()->json([

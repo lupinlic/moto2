@@ -62,7 +62,7 @@ const Address = () => {
                         <p>
                             <span style={{ fontWeight: '500' }}>Họ tên:</span>
                             <span>{item.FullName}</span>
-                            {item.isDefault === 1 && (
+                            {Number(item.isDefault) === 1 && (
                                 <span style={{ color: '#27AE60', fontSize: '12px', marginLeft: '9px' }}>Địa chỉ mặc định</span>
                             )}
                         </p>
@@ -76,7 +76,7 @@ const Address = () => {
                         </p>
                     </div>
                     <div>
-                        {item.isDefault === 0 && (
+                        {Number(item.isDefault) === 0 && (
                             <p style={{ color: '#27AE60', cursor: 'pointer' }} onClick={() => handlesetdefault(item.AddressID)}>Đặt làm địa chỉ mặc định</p>
                         )}
                         <div className='d-flex '>

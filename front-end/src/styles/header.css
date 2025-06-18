@@ -250,3 +250,63 @@
 .sidebar a:hover {
     background: #cc1818;
 }
+
+/* search */
+.search-container {
+    position: relative;
+    display: inline-block;
+}
+
+.search-icon {
+    cursor: pointer;
+}
+
+/* Khung chứa input và button */
+.search-box {
+    position: absolute;
+    bottom: -50px;
+    left: -70px;
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 5px;
+    gap: 5px;
+    opacity: 0;
+    background-color: #fff;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.search-container::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: -15px;
+    width: 60px;
+    height: 20px;
+    /* vùng ảo cao 30px dưới icon */
+}
+
+/* Input và Button style */
+.search-input {
+    outline: none;
+    border: none;
+}
+
+.search-button {
+
+    background-color: #cc1818;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Hover icon để hiện khung */
+.search-container:hover .search-box {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}

@@ -4,13 +4,21 @@ import productApi from '../../../api/productApi';
 const ProductVersionForm = ({ id, onUpdate, onClose }) => {
     const [productVersionName, setProductVersionName] = useState(null);
     const [productVersionQuantity, setProductVersionQuantity] = useState(null);
+    const [ProductID, setProductID] = useState(''); // ID sản phẩm
+    const [product, setProduct] = useState([]);
     useEffect(() => {
+        productApi.getAll()
+            .then((response) => {
+                setProduct(response);
+                console.log(response);
+            });
         if (id) {
             productApi.getVersionByID(id)
                 .then((response) => {
                     const data = response.data;
                     setProductVersionName(data.ProductVersionName);
                     console.log(data);
+                    setProductID(data.ProductID);
                     setProductVersionQuantity(data.ProductVersionQuantity);
                 })
                 .catch((error) => {
@@ -20,6 +28,7 @@ const ProductVersionForm = ({ id, onUpdate, onClose }) => {
             // reset khi không phải edit
             setProductVersionName('');
             setProductVersionQuantity('');
+            setProductID('');
         }
     }, [id]);
 
@@ -28,6 +37,7 @@ const ProductVersionForm = ({ id, onUpdate, onClose }) => {
         const version = {
             ProductVersionName: productVersionName,
             ProductVersionQuantity: productVersionQuantity,
+            ProductID: ProductID
         };
         try {
             if (id) {
@@ -71,6 +81,17 @@ const ProductVersionForm = ({ id, onUpdate, onClose }) => {
                         onChange={(e) => setProductVersionQuantity(e.target.value)}
                         required
                     />
+                </div>
+                <div>
+                    <label>Sản phẩm</label>
+                    <select value={ProductID} onChange={e => setProductID(e.target.value)} required>
+                        <option value="">-- Chọn sản phẩm --</option>
+                        {product?.map(c => (
+                            <option key={c.ProductID} value={c.ProductID}>
+                                {c.ProductName}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div className='form-bt'>
                     <button type="submit" className="btn btn-primary">Lưu</button>
