@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import feedbackApi from '../../../api/feedbackApi'
+import FeedbackForm from './FeedbackForm';
 
 function Feedback() {
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
+    const openForm = (feedbackId = null) => {
+        setSelectedId(feedbackId);
+        setIsFormVisible(true);
+    };
+
+    // Đóng form
+    const closeForm = () => {
+        setIsFormVisible(false);
+    };
     const [feedback, setFeedback] = useState([]);
     const fetchFeedback = async () => {
         try {
@@ -25,6 +37,8 @@ function Feedback() {
                             <th>STT</th>
                             <th>Khách hàng</th>
                             <th>Nội dung</th>
+                            <th>Phản hồi</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,12 +47,27 @@ function Feedback() {
                                 <td>{index + 1}</td>
                                 <td>{item.customer.FullName}</td>
                                 <td>{item.Content}</td>
+                                <td>{item.Feedback}</td>
+                                <td>
+                                    {item.Feedback === 'Chưa trả lời'
+                                        ? <button className="btn btn-warning btn-sm mr-2" onClick={() => openForm(item.FeedbackID)}>Trả lời</button>
+                                        : ''}
+                                </td>
                             </tr>
                         ))}
 
                     </tbody>
                 </table>
             </div>
+            {isFormVisible && (
+                <>
+                    <div className="overLay"></div> {/* Lớp overlay */}
+                    <FeedbackForm
+                        feedbackID={selectedId}
+                        onUpdate={fetchFeedback}
+                        onClose={closeForm} /> {/* Form */}
+                </>
+            )}
         </div>
     )
 }

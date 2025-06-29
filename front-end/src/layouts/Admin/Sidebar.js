@@ -49,35 +49,35 @@ function Sidebar() {
                 </li>
                 <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Accounts'> <i class="fas fa-user me-2"></i> Tài khoản</Link> </li>
                 <li onClick={toggleCate} className='slide' style={{ padding: '8px 20px' }}>
-                    <Link to='' className='d-flex align-items-center'><i class="fas fa-user me-2"></i>
+                    <Link to='' className='d-flex align-items-center'><i class="fas fa-layer-group me-2"></i>
                         <span>Danh mục</span>
                         <div style={{ marginLeft: '40px' }}>{showcate ? '▲' : '▼'}</div>
                     </Link>
                 </li>
                 {showcate && (
                     <div className='d-flex flex-column' style={{ paddingLeft: '16px' }}>
-                        <Link className='slidechild' style={{ padding: '2px 20px' }} to='/Admin/CarCompany'><i class="fas fa-user me-2"></i>Hãng xe</Link>
-                        <Link className='slidechild' style={{ padding: '2px 20px' }} to='/Admin/VehicleType'><i class="fas fa-user me-2"></i>Loại xe</Link>
+                        <Link className='slidechild' style={{ padding: '2px 20px' }} to='/Admin/CarCompany'><i class="fas fa-car me-2"></i>Hãng xe</Link>
+                        <Link className='slidechild' style={{ padding: '2px 20px' }} to='/Admin/VehicleType'><i class="fas fa-truck me-2"></i>Loại xe</Link>
 
                     </div>
                 )}
                 <li onClick={toggleDetails} className='slide' style={{ padding: '8px 20px' }}>
-                    <Link to='' className='d-flex align-items-center'><i class="fas fa-user me-2"></i>
+                    <Link to='' className='d-flex align-items-center'><i class="fas fa-box-open me-2"></i>
                         <span>Sản phẩm</span>
                         <div style={{ marginLeft: '40px' }}>{showDetails ? '▲' : '▼'}</div>
                     </Link>
                 </li>
                 {showDetails && (
                     <div className='d-flex flex-column' style={{ paddingLeft: '16px' }}>
-                        <Link className='slidechild' to='/Admin/Product' style={{ padding: '2px 20px' }}><i class="fas fa-user me-2"></i>Sản phẩm</Link>
-                        <Link className='slidechild' to='/Admin/ProductColor' style={{ padding: '2px 20px' }}><i class="fas fa-user me-2"></i>Màu sắc</Link>
-                        <Link className='slidechild' to='/Admin/ProductVersion' style={{ padding: '2px 20px' }}><i class="fas fa-user me-2"></i>Phiên bản</Link>
+                        <Link className='slidechild' to='/Admin/Product' style={{ padding: '2px 20px' }}><i class="fas fa-cube me-2"></i>Sản phẩm</Link>
+                        <Link className='slidechild' to='/Admin/ProductColor' style={{ padding: '2px 20px' }}><i class="fas fa-palette me-2"></i>Màu sắc</Link>
+                        <Link className='slidechild' to='/Admin/ProductVersion' style={{ padding: '2px 20px' }}><i class="fas fa-code-branch me-2"></i>Phiên bản</Link>
                     </div>
                 )}
-                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Customer'><i class="fas fa-user me-2"></i>Khách hàng</Link> </li>
-                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Order'><i class="fas fa-user me-2"></i>Đơn hàng</Link> </li>
-                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/News'><i class="fas fa-user me-2"></i>Tin tức</Link> </li>
-                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Feedback'><i class="fas fa-user me-2"></i>Phản hồi</Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Customer'><i class="fas fa-users me-2"></i>Khách hàng</Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Order'><i class="fas fa-shopping-cart me-2"></i>Đơn hàng</Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/News'><i class="fas fa-newspaper me-2"></i>Tin tức</Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Feedback'><i class="fas fa-comments me-2"></i>Phản hồi</Link> </li>
 
 
 

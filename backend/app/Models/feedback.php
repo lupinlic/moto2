@@ -14,7 +14,7 @@ class feedback extends Model
     protected $primaryKey = 'FeedbackID';
     public $timestamps = false;
 
-    protected $fillable = ['CustomerID', 'Content'];
+    protected $fillable = ['CustomerID', 'Content','Feedback'];
 
     public function customer()
     {

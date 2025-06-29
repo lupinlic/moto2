@@ -8,6 +8,7 @@ import authUser from '../../api/authUser';
 import customerApi from '../../api/customerApi';
 import addressApi from '../../api/addressApi';
 import OrderDetails from '../Admin/Order/OrderDetails';
+import feedbackApi from '../../api/feedbackApi';
 
 function Account() {
     const userId = localStorage.getItem('user_id');
@@ -26,12 +27,14 @@ function Account() {
     // tài khoản
     const [name, setName] = useState();
     // khách hàng
-
+    const [customer, setCustomer] = useState();
     const [fullname, setFullName] = useState();
     const [phone, setPhone] = useState();
     const [email, setEmail] = useState();
     // đơn hàng
     const [orders, setOrders] = useState([]);
+    // phản hồi
+    const [feedbacks, setFeedbacks] = useState([]);
     // hiện form địa chỉ
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [selectedSection, setSelectedSection] = useState("info");
@@ -70,16 +73,28 @@ function Account() {
     const getCustomer = () => {
         customerApi.getByIdUser(userId)
             .then(response => {
+                setCustomer(response.data.CustomerID)
                 setEmail(response.data.Email)
                 setFullName(response.data.FullName)
                 setPhone(response.data.PhoneNumber)
+                console.log(response.data)
             }
             )
             .catch(error => {
                 console.error('Có lỗi khi lấy khách hàng ' + error + '-' + error.response.data.message)
             })
     }
-
+    // lấy phản hồi
+    const getFeedback = () => {
+        console.log(customer)
+        feedbackApi.showbycustomer(customer)
+            .then(response => {
+                setFeedbacks(response.data);
+            })
+            .catch(error => {
+                console.error('Có lỗi khi lấy phản hồi ' + error + '-' + error.response.data.message)
+            })
+    }
     // lấy đơn hàng
     const getOrder = () => {
         customerApi.getOrderByIdUser(userId)
@@ -96,6 +111,11 @@ function Account() {
         getCustomer();
         getOrder();
     }, [userId])
+    useEffect(() => {
+        if (customer) {
+            getFeedback();
+        }
+    }, [customer]);
 
 
     return (
@@ -148,6 +168,12 @@ function Account() {
                                 onClick={() => setSelectedSection("addresses")}
                             >
                                 Số địa chỉ
+                            </li>
+                            <li
+                                className={selectedSection === "feedback" ? "active" : ""}
+                                onClick={() => setSelectedSection("feedback")}
+                            >
+                                Phản hồi
                             </li>
                         </ul>
                     </div>
@@ -209,6 +235,34 @@ function Account() {
                                 <div>
                                     <p> ĐỊA CHỈ CỦA BẠN</p>
                                     <Address />
+                                </div>
+                            )}
+                            {selectedSection === "feedback" && (
+                                <div>
+                                    <h5>PHẢN HỒI CỦA BẠN</h5>
+                                    <table bordered className="mt-3 w-100 orders-table">
+                                        <thead>
+                                            <tr className="text-white text-center" style={{ backgroundColor: "#FFA726" }}>
+                                                <th>Nội dung phản hồi</th>
+                                                <th>Trả lời của cửa hàng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {feedbacks.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="6" className="text-center">Không có phản hồi nào.</td>
+                                                </tr>
+                                            ) : (
+                                                feedbacks?.map((item, index) => (
+                                                    <tr key={index} className="text-center" style={{ borderBottom: '1px solid #FFA726' }}>
+                                                        <td>{item.Content}</td>
+                                                        <td>{item.Feedback}</td>
+
+                                                    </tr>
+                                                ))
+                                            )}
+                                        </tbody>
+                                    </table>
                                 </div>
                             )}
                         </div>

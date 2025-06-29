@@ -21,7 +21,11 @@ class feedbackController extends Controller
     public function store(Request $request)
     {
         //
-        $feedback = feedback::create($request->all());
+        $feedback = feedback::create([
+            "CustomerID" => $request->CustomerID,
+            "Content" => $request->Content,
+            "Feedback" => "Chưa trả lời",         
+        ]);
         return response()->json([
             "message" => "đã tạo danh mục thành công",
             "data" => $feedback,
@@ -44,5 +48,61 @@ class feedbackController extends Controller
             "message" => "đã xóa danh mục thành công"
         ]);
     }
+    public function update(Request $request,$FeedbackID)
+    {
+        //
+        $feedback = feedback::find($FeedbackID);
+        if (!$feedback) {
+            return response()->json([
+                "message" => "Không tìm thấy danh mục",
+                "data" => null
+            ], 404);
+        }
+    
+        // Cập nhật dữ liệu
+        $feedback->update([
+            "Feedback" => $request->Feedback,
+        ]);
+    
+        return response()->json([
+            "message" => "Đã sửa danh mục thành công",
+            "data" => $feedback,
+        ]);
+    }
+    public function show($FeedbackID)
+    {
+        //
+        $feedback = feedback::find($FeedbackID); // Tìm theo FeedbackID
+
+        if (!$feedback) {
+            return response()->json([
+                "message" => "Không tìm thấy danh mục",
+                "data" => null
+            ], 404);
+        }
+    
+        return response()->json([
+            "message" => "Hiển thị danh mục thành công",
+            "data" => $feedback,
+        ]);
+    }
+    public function showbyCustomer($CustomerID)
+    {
+        //
+        $feedback = feedback::where('CustomerID', $CustomerID)->get();
+
+        if ($feedback->isEmpty()) {
+            return response()->json([
+                "message" => "Không tìm thấy phản hồi cho khách hàng này",
+                "data" => null
+            ], 404);
+        }
+    
+        return response()->json([
+            "message" => "Hiển thị phản hồi thành công",
+            "data" => $feedback,
+        ]);
+    }
+   
 
 }

@@ -64,7 +64,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('customer/getorder/{id}', [CustomerController::class, 'getOrderOfCustomer']);
     Route::get('orderItem/{id}', [OrderItemController::class, 'show']);
     // feedback
-    Route::apiResource('feedback',feedbackController::class)->only('destroy','store','index');
+    Route::apiResource('feedback',feedbackController::class)->only('store','index','show');
+    Route::get('feedback/customer/{id}', [feedbackController::class, 'showbyCustomer']);
     // tin tức
     Route::apiResource('news',NewsController::class)->only('index','show');
 
@@ -95,7 +96,8 @@ Route::middleware('auth:sanctum')->group(function () {
         // đơn hnagf
         Route::get('order', [OrderController::class, 'index']);
         Route::get('order/{id}', [OrderController::class, 'show']);
-       
+        // phản hồi
+        Route::put('feedback/{id}', [feedbackController::class, 'update']);
      
         // thống kê
         Route::get('/statistics', [OrderController::class, 'getAdvancedStatistics']);
